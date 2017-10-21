@@ -19,7 +19,7 @@ const App = () => (
     <Switch>
       <Route exact path="/" component={Posts} />
       <Route path="/post/:id" component={ShowPost} />
-      <Route render={() => (<div>404... no existe</div>)} />
+      <Route render={() => (<img src="http://404-resto.com/typo3temp/pics/7580ea80fa.jpg"/>)} />
     </Switch>
   </MuiThemeProvider>
 );

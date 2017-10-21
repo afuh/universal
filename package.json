@@ -10,7 +10,7 @@
     "server": "nodemon src/server.js --exec babel-node --presets env",
     "client": "webpack -w --display-max-modules 0",
     "build": "npm run clean && webpack -p --optimize-minimize",
-    "clean": "rimraf ./src/static/* && rimraf ./src/server-es5.js",
+    "clean": "rimraf ./src/static/bundle.js && rimraf ./src/server-es5.js",
     "prod": "npm run build && node src/server-es5.js"
   },
   "author": "",
