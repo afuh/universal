@@ -6,12 +6,12 @@
     "node": ">= 7.6.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\" -n \"NODE,WEBPACK\" --prefix name -c \"blue.bold,magenta.bold\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\" -n \"NODE,WEBPACK\" --prefix name -c \"blue.bold,magenta.bold\"",
     "server": "nodemon src/server.js --exec babel-node --presets env",
     "client": "webpack -w --display-max-modules 0",
-    "build": "npm run clean && webpack -p --optimize-minimize",
+    "build": "NODE_ENV=production webpack -p --optimize-minimize",
     "clean": "rimraf ./src/static/bundle.js && rimraf ./src/server-es5.js",
-    "prod": "npm run build && node src/server-es5.js"
+    "start": "npm run build && node src/server-es5.js"
   },
   "author": "",
   "license": "ISC",
@@ -45,8 +45,8 @@
     "material-ui": "^0.19.4",
     "mongoose-mongodb-errors": "0.0.2",
     "nodemon": "^1.12.1",
-    "request": "^2.83.0",
     "rimraf": "^2.6.2",
+    "request": "^2.83.0",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3",
     "webpack-node-externals": "^1.6.0"

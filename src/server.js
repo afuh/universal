@@ -48,5 +48,5 @@ app.get('*', (req, res) => {
 });
 
 
-const PORT = 7777
+const PORT = process.env.PORT || 7777
 app.listen(PORT, () => console.log('\x1b[35m%s\x1b[0m', `Express running → http://localhost:${PORT}`))
