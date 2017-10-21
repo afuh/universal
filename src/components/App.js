@@ -1,24 +1,26 @@
 import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-class Test extends React.Component {
-  handleClick(){
-    alert("and in the client 🐱")
-  }
-  render () {
-    return (
-      <section >
-        <h1 onClick={() => this.handleClick()}>This is react in the server (SEO friendly)</h1>
-        <Link to={`/1`}>Next</Link>
-      </section>
-    )
-  }
-}
+// Material
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-export const App = () => (
+// Componets
+import Posts from './Posts'
+import ShowPost from './ShowPost'
+
+export const display = {
+  maxWidth: "600px",
+  margin: "0 auto"
+};
+
+
+const App = () => (
+  <MuiThemeProvider>
     <Switch>
-      <Route exact path="/" component={Test} />
+      <Route exact path="/post" component={Posts} />
+      <Route path="/post/:id" component={ShowPost} />
     </Switch>
+  </MuiThemeProvider>
 );
 
 export default App;
