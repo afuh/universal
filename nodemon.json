@@ -1,0 +1,6 @@
+{
+  "debug": true,
+  "ext": "js",
+  "watch": "src",
+  "ignore": ["src/static/bundle.js", "src/server-es5.js"]
+}
