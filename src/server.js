@@ -14,7 +14,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 
-import { App } from './components/App';
+import App from './components/App';
 
 mongoose.connect(process.env.DATABASE, { useMongoClient: true})
   .then( mongoose.Promise = global.Promise );
