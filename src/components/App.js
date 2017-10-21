@@ -17,8 +17,9 @@ export const display = {
 const App = () => (
   <MuiThemeProvider>
     <Switch>
-      <Route exact path="/post" component={Posts} />
+      <Route exact path="/" component={Posts} />
       <Route path="/post/:id" component={ShowPost} />
+      <Route render={() => (<div>404... no existe</div>)} />
     </Switch>
   </MuiThemeProvider>
 );

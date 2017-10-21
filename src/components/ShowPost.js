@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 // Utils
 import axios from 'axios';
@@ -11,31 +10,38 @@ import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Ca
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
-import Edit from 'material-ui/svg-icons/image/edit';
+import Edit from 'material-ui/svg-icons/action/done';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 class ShowPost extends React.Component {
   constructor(){
     super()
     this.state = {
-      post: [],
+      title: '',
+      text: '',
+      created: '',
       open: false,
-      edit: true
+      edit: false
     }
+
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.removePost = this.removePost.bind(this)
+
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount(){
     const { id } = this.props.match.params
     axios.get(`/api/post/${id}`).then(res => this.handleData(res.data))
   }
-  handleEdit(){
-    console.log(this.state.edit);
+  handleData({ title, text, created }){
+    this.setState({ title, text, created })
   }
-  handleData(post){
-    this.setState({ post })
+  handleEdit(edit){
+    this.setState({ edit });
   }
   handleOpen() {
     this.setState({open: true});
@@ -44,16 +50,31 @@ class ShowPost extends React.Component {
     this.setState({open: false});
   }
   removePost(){
-    axios.delete(`/api/post/${this.state.post._id}`)
-    .then(res => {
-      if (res.status === 200) {
-        this.handleClose()
-        location.href="/post"
-      }
+    const { id } = this.props.match.params
+    axios.delete(`/api/post/${id}`)
+    .then(() => {
+      this.handleClose()
+      this.props.history.goBack()
     })
   }
+  handleChange(event){
+    const { id, value } = event.target
+    console.log(event.target);
+    if (id === "title") {
+      this.setState({ title: value})
+    } else {
+      this.setState({ text: value})
+    }
+  }
+  handleSubmit(){
+    const { id } = this.props.match.params
+    const { title, text } = this.state
+
+    axios.put(`/api/post/${id}`, { title, text })
+      .then(() => this.handleEdit(false))
+  }
   render () {
-    const { post } = this.state
+    const { title, text, created } = this.state
     const actions = [
       <FlatButton
         key={0}
@@ -74,6 +95,7 @@ class ShowPost extends React.Component {
         onClick={this.handleClose}
       />,
     ];
+
     return (
       <section style={display}>
         <Card>
@@ -82,14 +104,20 @@ class ShowPost extends React.Component {
             avatar='/images/Evilmorty.jpg'
           />
           <CardTitle
-            title={post.title}
-            subtitle={moment(post.created).fromNow()}
+            onClick={() => this.handleEdit(true)}
+            title={
+              !this.state.edit ? title : <TextField id={"title"} defaultValue={title} onChange={this.handleChange}/>
+            }
+            subtitle={created && moment(created).fromNow()}
           />
-          <CardText>{post.text}</CardText>
+          <CardText
+            onClick={() => this.handleEdit(true)}>{
+            !this.state.edit ? text : <TextField  id={"text"} onChange={this.handleChange} fullWidth={true} multiLine={true} defaultValue={text} />
+          }</CardText>
           <Divider />
           <CardActions>
-            <IconButton><Edit /></IconButton>
-            <IconButton onClick={this.handleOpen} ><Delete /></IconButton>
+            {!this.state.edit && <IconButton onClick={this.handleOpen}><Delete /></IconButton>}
+            {this.state.edit && <IconButton onClick={this.handleSubmit}><Edit /></IconButton>}
             <Dialog
               actions={actions}
               modal={false}
