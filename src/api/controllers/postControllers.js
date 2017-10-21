@@ -6,7 +6,7 @@ exports.createPost = async (req, res) => {
 }
 
 exports.getAllPosts = async (req, res) => {
-  const posts = await Post.find()
+  const posts = await Post.find().sort({created: -1}).limit(10)
   res.json(posts)
 }
 
@@ -21,6 +21,7 @@ exports.deletePost = async (req, res) => {
 }
 
 exports.updatePost = async (req, res) => {
-  const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  req.body.edited = Date.now()
+  const post = await Post.findByIdAndUpdate(req.params.id, req.body,{ new: true })
   res.json(post)
 }
