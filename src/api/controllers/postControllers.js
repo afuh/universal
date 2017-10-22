@@ -21,7 +21,6 @@ exports.deletePost = async (req, res) => {
 }
 
 exports.updatePost = async (req, res) => {
-  req.body.edited = Date.now()
   const post = await Post.findByIdAndUpdate(req.params.id, req.body,{ new: true })
   res.json(post)
 }

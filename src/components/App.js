@@ -5,19 +5,13 @@ import { Route, Switch } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Componets
-import Posts from './Posts'
+import PostsList from './PostsList'
 import ShowPost from './ShowPost'
-
-export const display = {
-  maxWidth: "600px",
-  margin: "0 auto"
-};
-
 
 const App = () => (
   <MuiThemeProvider>
     <Switch>
-      <Route exact path="/" component={Posts} />
+      <Route exact path="/" component={PostsList} />
       <Route path="/post/:id" component={ShowPost} />
       <Route render={() => (<img src="http://404-resto.com/typo3temp/pics/7580ea80fa.jpg"/>)} />
     </Switch>

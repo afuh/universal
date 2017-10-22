@@ -3,7 +3,6 @@ import React from 'react';
 // Utils
 import axios from 'axios';
 import moment from 'moment';
-import { display } from './App.js'
 
 // Material UI
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
@@ -49,22 +48,9 @@ class ShowPost extends React.Component {
   handleClose() {
     this.setState({open: false});
   }
-  removePost(){
-    const { id } = this.props.match.params
-    axios.delete(`/api/post/${id}`)
-    .then(() => {
-      this.handleClose()
-      this.props.history.goBack()
-    })
-  }
   handleChange(event){
     const { id, value } = event.target
-    console.log(event.target);
-    if (id === "title") {
-      this.setState({ title: value})
-    } else {
-      this.setState({ text: value})
-    }
+    id === 'title' ? this.setState({ title: value}) : this.setState({ text: value })
   }
   handleSubmit(){
     const { id } = this.props.match.params
@@ -73,58 +59,53 @@ class ShowPost extends React.Component {
     axios.put(`/api/post/${id}`, { title, text })
       .then(() => this.handleEdit(false))
   }
+  removePost(){
+    const { id } = this.props.match.params
+
+    axios.delete(`/api/post/${id}`)
+    .then(() => {
+      this.handleClose()
+      this.props.history.goBack()
+    })
+  }
   render () {
-    const { title, text, created } = this.state
+    const { title, text, created, edit } = this.state
     const actions = [
-      <FlatButton
-        key={0}
-        label="Agree"
-        primary={true}
-        onClick={this.handleClose}
-      />,
-      <FlatButton
-        key={1}
-        label="Submit"
-        primary={true}
-        onClick={this.removePost}
-      />,
-      <FlatButton
-        key={3}
-        label="accept"
-        primary={true}
-        onClick={this.handleClose}
-      />,
+      <FlatButton key='cancel' label="Cancel" primary={true} onClick={this.handleClose}/>,
+      <FlatButton key='submit' label="Submit" primary={true} onClick={this.removePost}/>
     ];
+    const content = {
+      title: !edit ? title : <TextField id={"title"} defaultValue={title} onChange={this.handleChange}/>,
+      text: !edit ? text : <TextField  id={"text"} defaultValue={text} onChange={this.handleChange} fullWidth={true} multiLine={true} />
+    }
 
     return (
-      <section style={display}>
+      <section style={{maxWidth: "600px", margin: "0 auto"}}>
         <Card>
           <CardHeader
             title="username"
             avatar='/images/Evilmorty.jpg'
           />
           <CardTitle
-            onClick={() => this.handleEdit(true)}
-            title={
-              !this.state.edit ? title : <TextField id={"title"} defaultValue={title} onChange={this.handleChange}/>
-            }
+            title={content.title}
             subtitle={created && moment(created).fromNow()}
+            onClick={() => this.handleEdit(true)}
           />
-          <CardText
-            onClick={() => this.handleEdit(true)}>{
-            !this.state.edit ? text : <TextField  id={"text"} onChange={this.handleChange} fullWidth={true} multiLine={true} defaultValue={text} />
-          }</CardText>
+          <CardText onClick={() => this.handleEdit(true)}>
+            {content.text}
+          </CardText>
           <Divider />
+
           <CardActions>
-            {!this.state.edit && <IconButton onClick={this.handleOpen}><Delete /></IconButton>}
-            {this.state.edit && <IconButton onClick={this.handleSubmit}><Edit /></IconButton>}
+            {!edit && <IconButton onClick={this.handleOpen}><Delete /></IconButton>}
+            {edit && <IconButton onClick={this.handleSubmit}><Edit /></IconButton>}
             <Dialog
               actions={actions}
               modal={false}
               open={this.state.open}
               onRequestClose={this.handleClose}
             > Discard post?
-          </Dialog>
+            </Dialog>
           </CardActions>
         </Card>
       </section>
