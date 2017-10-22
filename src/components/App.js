@@ -11,10 +11,9 @@ import ShowPost from './ShowPost'
 
 const Wrapper = ({children}) => {
   const style = {
-    width: "360px",
-    height: "640px",
+    maxWidth: "460px",
+    height: "740px",
     margin: '0 auto',
-    padding: '6px',
     background: 'whitesmoke',
     border: '1px solid #efefef',
     overflow: 'auto'
