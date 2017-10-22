@@ -1,5 +1,12 @@
 const Post = require('../models/Post');
 
+exports.checkBody = async (req, res, next) => {
+  const { title, text } = req.body
+  if (text.length === 0 ) return res.status(500).send('You should write something')
+  if (title.length === 0 ) return res.status(500).send('Please provide a title')
+  next();
+}
+
 exports.createPost = async (req, res) => {
   const post = await new Post(req.body).save()
   res.json(post)
