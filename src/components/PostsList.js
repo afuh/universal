@@ -9,7 +9,6 @@ import _ from 'lodash/collection'
 // Material UI
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import {cyan100, lightBlack} from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
@@ -41,36 +40,31 @@ class PostsList extends React.Component {
     const { posts } = this.state
 
     return (
-      <section style={{maxWidth: '600px', margin: '0 auto'}}>
-        <Paper>
-          <Subheader>Posts</Subheader>
-          <List style={{padding: 0}}>
-            <ListItem containerElement={<CreatePost addPost={this.handleData}/>}/>
-            <Divider />
-
-            {posts.map(p => (
-              <div key={p._id}>
-                <ListItem
-                  leftAvatar={<Avatar src={_.sample(avatars)} />}
-                  primaryText={
-                    <p>
-                      {p.title}
-                      <span style={{color: lightBlack, fontSize: "0.7em"}}>
-                        &nbsp;&nbsp;{moment(p.created).fromNow()}
-                      </span>
-                    </p>
-                  }
-                  secondaryText={p.text}
-                  secondaryTextLines={2}
-                  hoverColor={cyan100}
-                  containerElement={<Link to={`/post/${p._id}`}/>}
-                />
-                <Divider inset={true} />
-              </div>
-            ))}
-          </List>
-        </Paper>
-      </section>
+      <List style={{padding: 0}}>
+        <ListItem containerElement={<CreatePost addPost={this.handleData}/>}/>
+        <Divider />
+        <Subheader>Latests Posts</Subheader>
+        {posts.map(p => (
+          <div key={p._id}>
+            <ListItem
+              leftAvatar={<Avatar src={_.sample(avatars)} />}
+              primaryText={
+                <p>
+                  {p.title}
+                  <span style={{color: lightBlack, fontSize: "0.7em"}}>
+                    &nbsp;&nbsp;{moment(p.created).fromNow()}
+                  </span>
+                </p>
+              }
+              secondaryText={p.text}
+              secondaryTextLines={2}
+              hoverColor={cyan100}
+              containerElement={<Link to={`/post/${p._id}`}/>}
+            />
+            <Divider inset={true} />
+          </div>
+        ))}
+      </List>
     )
   }
 }

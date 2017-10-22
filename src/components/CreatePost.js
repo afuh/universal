@@ -7,6 +7,7 @@ import axios from 'axios';
 // Material UI
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 class CreatePost extends React.Component {
   constructor(){
@@ -35,28 +36,37 @@ class CreatePost extends React.Component {
     const { text, title } = this.state
 
     return (
-      <div>
-        <div style={{display: "flex", justifyContent: "space-around"}}>
+      <Card style={{boxShadow: "0 0"}}>
+        <CardHeader
+          title="Create post"
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardText expandable={true}>
           <TextField
             id="title"
             floatingLabelText="Title"
             value={title}
+            fullWidth={true}
             onChange={this.handleChange}
           />
           <TextField
             id="text"
             floatingLabelText="Post"
+            multiLine={true}
             value={text}
+            fullWidth={true}
             onChange={this.handleChange}
           />
-        </div>
-        <FlatButton
-          onClick={this.handleSubmit}
-          style={{margin: "20px 0"}}
-          label="Submit"
-          primary={true}
-          fullWidth={true}/>
-      </div>
+          <div style={{display: "flex", justifyContent: 'flex-end', }}>
+            <FlatButton
+              onClick={this.handleSubmit}
+              style={{marginTop: "20px"}}
+              label="Submit"
+              primary={true} />
+          </div>
+        </CardText>
+      </Card>
     )
   }
 }

@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import Delete from 'material-ui/svg-icons/action/delete';
 import Edit from 'material-ui/svg-icons/action/done';
+import Back from 'material-ui/svg-icons/navigation/arrow-back';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -80,18 +81,25 @@ class ShowPost extends React.Component {
     }
 
     return (
-      <section style={{maxWidth: "600px", margin: "0 auto"}}>
-        <Card>
+      <div>
+        <Card style={{boxShadow: "0 0"}}>
+          <CardHeader style={{padding: "8px"}} title={
+            <IconButton onClick={() => this.props.history.goBack()}><Back /></IconButton>} />
+        </Card>
+        <Divider />
+        <Card style={{boxShadow: "0 0", margin: "10px 0"}}>
           <CardHeader
             title="username"
             avatar='/images/Evilmorty.jpg'
+            subtitle='name'
           />
           <CardTitle
             title={content.title}
             subtitle={created && moment(created).fromNow()}
+            subtitleStyle={{fontSize: "12px"}}
             onClick={() => this.handleEdit(true)}
           />
-          <CardText onClick={() => this.handleEdit(true)}>
+          <CardText style={{whiteSpace: "pre-wrap"}}onClick={() => this.handleEdit(true)}>
             {content.text}
           </CardText>
           <Divider />
@@ -100,6 +108,7 @@ class ShowPost extends React.Component {
             {!edit && <IconButton onClick={this.handleOpen}><Delete /></IconButton>}
             {edit && <IconButton onClick={this.handleSubmit}><Edit /></IconButton>}
             <Dialog
+              bodyClassName={'device'}
               actions={actions}
               modal={false}
               open={this.state.open}
@@ -108,7 +117,7 @@ class ShowPost extends React.Component {
             </Dialog>
           </CardActions>
         </Card>
-      </section>
+      </div>
     )
   }
 }
