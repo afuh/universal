@@ -41,7 +41,9 @@ class ShowPost extends React.Component {
   }
   componentDidMount(){
     const { id } = this.props.match.params
-    axios.get(`/api/post/${id}`).then(res => this.handleData(res.data))
+    axios.get(`/api/post/${id}`)
+      .then(res => this.handleData(res.data))
+      .catch(res => this.handleError(true, res.response.data))
   }
   handleData({ title, text, created }){
     this.setState({ title, text, created })

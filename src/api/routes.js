@@ -10,7 +10,7 @@ module.exports = app => {
     .post(p.checkBody, error(p.createPost))
 
   app.route('/api/post/:id')
-    .get(error(p.getSinglePost))
-    .delete(error(p.deletePost))
-    .put(p.checkBody, error(p.updatePost))
+    .get(p.checkId, error(p.getSinglePost))
+    .delete(p.checkId, error(p.deletePost))
+    .put(p.checkId, p.checkBody, error(p.updatePost))
 }

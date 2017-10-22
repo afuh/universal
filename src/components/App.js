@@ -29,7 +29,7 @@ const App = () => (
         <Switch>
           <Route exact path="/" component={PostsList} />
           <Route path="/post/:id" component={ShowPost} />
-          <Route render={() => (<img src="http://404-resto.com/typo3temp/pics/7580ea80fa.jpg"/>)} />
+          <Route render={() => (<img style={{width: "100%"}}src="http://404-resto.com/typo3temp/pics/7580ea80fa.jpg"/>)} />
         </Switch>
       </Wrapper>
     </MuiThemeProvider>
