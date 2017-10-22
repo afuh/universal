@@ -7,10 +7,10 @@ const error = fn => (req, res, next) => {
 module.exports = app => {
   app.route('/api/post')
     .get(error(p.getAllPosts))
-    .post(error(p.createPost))
+    .post(p.checkBody, error(p.createPost))
 
   app.route('/api/post/:id')
     .get(error(p.getSinglePost))
     .delete(error(p.deletePost))
-    .put(error(p.updatePost))
+    .put(p.checkBody, error(p.updatePost))
 }

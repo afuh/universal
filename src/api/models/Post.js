@@ -4,11 +4,13 @@ const error = require('mongoose-mongodb-errors')
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   text: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   created: {
     type: Date,

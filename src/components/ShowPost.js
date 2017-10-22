@@ -15,6 +15,9 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
+// Components
+import CatchErrors from './CatchErrors';
+
 class ShowPost extends React.Component {
   constructor(){
     super()
@@ -23,15 +26,18 @@ class ShowPost extends React.Component {
       text: '',
       created: '',
       open: false,
-      edit: false
+      edit: false,
+      error: '',
+      snackbar: false
     }
+
+    this.removePost = this.removePost.bind(this)
 
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
-    this.removePost = this.removePost.bind(this)
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleError = this.handleError.bind(this)
   }
   componentDidMount(){
     const { id } = this.props.match.params
@@ -59,6 +65,10 @@ class ShowPost extends React.Component {
 
     axios.put(`/api/post/${id}`, { title, text })
       .then(() => this.handleEdit(false))
+      .catch(res => this.handleError(true, res.response.data))
+  }
+  handleError(snackbar, error) {
+    this.setState({snackbar, error})
   }
   removePost(){
     const { id } = this.props.match.params
@@ -70,7 +80,7 @@ class ShowPost extends React.Component {
     })
   }
   render () {
-    const { title, text, created, edit } = this.state
+    const { title, text, created, edit, error, snackbar } = this.state
     const actions = [
       <FlatButton key='cancel' label="Cancel" primary={true} onClick={this.handleClose}/>,
       <FlatButton key='submit' label="Submit" primary={true} onClick={this.removePost}/>
@@ -107,16 +117,17 @@ class ShowPost extends React.Component {
           <CardActions>
             {!edit && <IconButton onClick={this.handleOpen}><Delete /></IconButton>}
             {edit && <IconButton onClick={this.handleSubmit}><Edit /></IconButton>}
-            <Dialog
-              bodyClassName={'device'}
-              actions={actions}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClose}
-            > Discard post?
-            </Dialog>
           </CardActions>
         </Card>
+        <CatchErrors key="snack" error={error} open={snackbar} close={() => this.handleError(false, error)}/>
+        <Dialog
+          bodyClassName={'device'}
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          > Discard post?
+        </Dialog>
       </div>
     )
   }

@@ -9,15 +9,21 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 
+// Components
+import CatchErrors from './CatchErrors';
+
 class CreatePost extends React.Component {
   constructor(){
     super()
     this.state = {
       title: '',
-      text: ''
+      text: '',
+      error: '',
+      snackbar: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleError = this.handleError.bind(this)
   }
   handleChange(event){
     const { id, value } = event.target
@@ -31,12 +37,16 @@ class CreatePost extends React.Component {
         this.props.addPost()
         this.setState({ title: '', text: ''})
       })
+      .catch(res => this.handleError(true, res.response.data))
+  }
+  handleError(snackbar, error) {
+    this.setState({snackbar, error})
   }
   render () {
-    const { text, title } = this.state
+    const { text, title, error, snackbar } = this.state
 
     return (
-      <Card style={{boxShadow: "0 0"}}>
+      <Card key="card" style={{boxShadow: "0 0"}}>
         <CardHeader
           title="Create post"
           actAsExpander={true}
@@ -66,6 +76,7 @@ class CreatePost extends React.Component {
               primary={true} />
           </div>
         </CardText>
+        <CatchErrors key="snack" error={error} open={snackbar} close={() => this.handleError(false, error)}/>
       </Card>
     )
   }
