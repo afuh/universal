@@ -2,8 +2,15 @@ const Post = require('../models/Post');
 
 exports.checkBody = async (req, res, next) => {
   const { title, text } = req.body
-  if (text.length === 0 ) return res.status(500).send('You should write something')
-  if (title.length === 0 ) return res.status(500).send('Please provide a title')
+  const message = {
+    noContent: 'You should write something',
+    noTitle: 'Please provide a title',
+    maxLength: `That's a very long text`
+  }
+
+  if (title.length > 1000 || text.length > 1000) return res.status(500).send(message.maxLength)
+  if (text.length === 0 ) return res.status(500).send(message.noContent)
+  if (title.length === 0 ) return res.status(500).send(message.noTitle)
   next();
 }
 

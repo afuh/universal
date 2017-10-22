@@ -5,12 +5,14 @@ const postSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 1000
   },
   text: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 1000
   },
   created: {
     type: Date,
