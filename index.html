@@ -21,10 +21,54 @@
         border-style: solid;
         border-radius: 36px;
         border-width: 60px 16px ;
+        position: relative;
+      }
+      .info {
+        position: absolute;
+        top: calc(34px - 0.5rem);
+        z-index: 1;
+        color: #00BCD4;
+        font-size: 20px;
+        font-family: Arial;
       }
     </style>
+
     <div class="wrapper">
-      <iframe class="device" src="https://post-universal.herokuapp.com/" width="360px" height="640px"></iframe>
+      <div class="info"></div>
+      <iframe class="device" src="https://post-universal.herokuapp.com" width="360px" height="640px"></iframe>
     </div>
+
+    <script type="text/javascript">
+      const iFrame = document.querySelector(".device")
+      const info = document.querySelector(".info");
+
+      const text = "Heroku is starting"
+      info.innerHTML = text
+      const stop = text + '...'
+
+      let int;
+
+      function loading() {
+        int = setInterval(count, 500);
+      }
+
+      function count() {
+        info.insertAdjacentHTML("beforeend", '.');
+
+        if (info.innerHTML.length > stop.length) {
+          clearInterval(int)
+          info.innerHTML = text
+          loading()
+        }
+      }
+
+      iFrame.onload = function() {
+        info.innerHTML = ''
+        clearInterval(int)
+      }
+
+      loading()
+
+    </script>
   </body>
 </html>
